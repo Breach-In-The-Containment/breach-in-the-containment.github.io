@@ -13,18 +13,18 @@
       font-family: 'Arial', sans-serif;
       margin: 0;
       min-height: 100vh;
-      
+
       display: flex;
-      flex-direction: column; /* stack vertically */
-      align-items: center;    /* center horizontally */
-      justify-content: flex-start; /* align to top vertically */
-      padding-top: 20px; /* some space from top */
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 20px;
     }
 
     .center-box {
       text-align: center;
-      width: 100%;       /* so text centers in the viewport */
-      max-width: 600px;  /* optional max width */
+      width: 100%;
+      max-width: 600px;
     }
 
     .coming-soon {
@@ -34,7 +34,7 @@
     }
 
     .copyright {
-      margin-top: auto; /* push copyright to bottom */
+      margin-top: auto;
       text-align: center;
       width: 100%;
       max-width: 600px;
@@ -44,7 +44,7 @@
 </head>
 <body>
   <div class="center-box">
-    <h1><strong>Nothing here to see yet, folks!</strong></h1>
+    <h1 id="random-header"><strong>Loading message...</strong></h1>
     <p>The webpage has NOT been constructed yet.</p>
   </div>
 
@@ -58,5 +58,28 @@
     <p>© Project Espresso - Breach In The Containment.</p>
     <a target="_blank" href="https://icons8.com/icon/2572/java">Logo Java Coffee Cup</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
   </div>
+
+<script>
+  const messages = [
+    "Nothing here to see yet, folks!",
+    "Still under heavy development!",
+    "Nothing but us, chickens!", // <- this one gets the quote credit
+    "Working on it!",
+    "Future site of something amazing!"
+  ];
+
+  const header = document.getElementById("random-header");
+  const randomIndex = Math.floor(Math.random() * messages.length);
+  const message = messages[randomIndex];
+
+  header.innerHTML = `<strong>${message}</strong>`;
+
+  // If it's the third message, add a credit below
+  if (randomIndex === 2) {
+    const credit = document.createElement("p");
+    credit.innerHTML = "<em>- Rule 34</em>";
+    header.insertAdjacentElement("afterend", credit);
+  }
+</script>
 </body>
 </html>
