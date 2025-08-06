@@ -4,9 +4,6 @@
   <meta charset="UTF-8" />
   <title>Project Espresso</title>
   <style>
-    html {
-        overflow: hidden;
-    }
     body {
       background: white;
       color: black;
@@ -44,7 +41,7 @@
 </head>
 <body>
   <div class="center-box">
-    <h1 id="random-header"><strong>Loading message...</strong></h1>
+    <h1><strong>Nothing here for now, folks!</strong></h1>
     <p>The webpage has NOT been constructed yet.</p>
   </div>
 
@@ -59,27 +56,5 @@
     <a target="_blank" href="https://icons8.com/icon/2572/java">Logo Java Coffee Cup</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
   </div>
 
-<script>
-  const messages = [
-    "Nothing here to see yet, folks!",
-    "Still under heavy development!",
-    "Nobody here but us chickens!", // <- this one gets the quote credit
-    "Working on it!",
-    "Future site of something amazing!"
-  ];
-
-  const header = document.getElementById("random-header");
-  const randomIndex = Math.floor(Math.random() * messages.length);
-  const message = messages[randomIndex];
-
-  header.innerHTML = `<strong>${message}</strong>`;
-
-  // If it's the third message, add a credit below
-  if (randomIndex === 2) {
-    const credit = document.createElement("p");
-    credit.innerHTML = "<em>- Rule 34</em>";
-    header.insertAdjacentElement("afterend", credit);
-  }
-</script>
 </body>
 </html>
