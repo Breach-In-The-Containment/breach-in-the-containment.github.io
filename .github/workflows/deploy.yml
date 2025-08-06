@@ -11,6 +11,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Configure Git
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          
       - name: Checkout current branch
         uses: actions/checkout@v3
 
@@ -31,6 +36,12 @@ jobs:
           mkdir -p out/dev/
           cp -r ./* out/dev/
         continue-on-error: true
+      
+      - name: Configure Git
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+
 
       - name: Push to gh-pages
         uses: peaceiris/actions-gh-pages@v3
