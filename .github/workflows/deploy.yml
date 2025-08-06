@@ -1,4 +1,4 @@
-name: Build and Deploy Multiple Sites
+name: Deploy Main and Dev to GitHub Pages
 
 on:
   push:
@@ -11,41 +11,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Configure Git
-        run: |
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-          
       - name: Checkout current branch
         uses: actions/checkout@v3
 
-      - name: Setup deploy folder
-        run: |
-          mkdir -p out
-
-      - name: Copy main site (if on main)
-        if: github.ref == 'refs/heads/main'
-        run: |
-          mkdir -p out/
-          cp -r ./* out/
-        continue-on-error: true
-
-      - name: Copy dev site (if on dev)
-        if: github.ref == 'refs/heads/dev'
-        run: |
-          mkdir -p out/dev/
-          cp -r ./* out/dev/
-        continue-on-error: true
-      
-      - name: Configure Git
+      - name: Set up Git identity
         run: |
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
 
+      - name: Create output folder
+        run: mkdir -p out
 
-      - name: Push to gh-pages
+      - name: Copy main site into root
+        if: github.ref == 'refs/heads/main'
+        run: |
+          cp -r . ./out/
+          echo "Main branch copied to /"
+
+      - name: Copy dev site into /dev
+        if: github.ref == 'refs/heads/dev'
+        run: |
+          mkdir -p ./out/dev
+          cp -r . ./out/dev/
+          echo "Dev branch copied to /dev"
+
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out
           publish_branch: gh-pages
+          keep_files: true
