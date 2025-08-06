@@ -1,4 +1,4 @@
-name: Deploy Main and Dev to GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -11,33 +11,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout current branch
-        uses: actions/checkout@v3
-
-      - name: Set up Git identity
-        run: |
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Create output folder
-        run: mkdir -p out
+        run: mkdir out
 
+      # Deploy main site to /
       - name: Copy main site into root
         if: github.ref == 'refs/heads/main'
         run: |
           rsync -av --exclude out . ./out/
 
+      # Deploy dev site to /dev
       - name: Copy dev site into /dev
         if: github.ref == 'refs/heads/dev'
         run: |
           mkdir -p ./out/dev
           rsync -av --exclude out . ./out/dev/
 
-
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out
-          publish_branch: gh-pages
-          keep_files: true
+          keep_files: true  # Keeps /dev when pushing main and vice versa
