@@ -1,10 +1,15 @@
+# .github/workflows/deploy.yml
+
 name: Deploy to GitHub Pages
 
 on:
+  # Trigger on push to main or dev branch directly
   push:
     branches:
       - main
       - dev
+  # IMPORTANT: This line is required to allow the workflow to be triggered by other workflows
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -39,5 +44,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out
-          # Keep this enabled as a fallback just in case
           keep_files: true
