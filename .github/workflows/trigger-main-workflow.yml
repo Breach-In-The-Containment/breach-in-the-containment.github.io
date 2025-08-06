@@ -1,0 +1,27 @@
+# .github/workflows/trigger-main-workflow.yml
+
+name: Trigger Main Deployment
+
+# This workflow is triggered on every push to the 'dev' branch
+on:
+  push:
+    branches:
+      - dev
+
+# We can also add a manual trigger for this workflow
+  workflow_dispatch:
+
+jobs:
+  trigger-main-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger the main deployment workflow
+        # This action dispatches the other workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          # The name of the workflow file to trigger (e.g., your deploy.yml)
+          workflow: 'deploy.yml'
+          # The branch to trigger the workflow on
+          ref: 'main'
+          # The token to use for authentication
+          token: ${{ secrets.GITHUB_TOKEN }}
