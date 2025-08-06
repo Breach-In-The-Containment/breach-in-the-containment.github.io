@@ -25,15 +25,14 @@ jobs:
       - name: Copy main site into root
         if: github.ref == 'refs/heads/main'
         run: |
-          cp -r . ./out/
-          echo "Main branch copied to /"
+          rsync -av --exclude out . ./out/
 
       - name: Copy dev site into /dev
         if: github.ref == 'refs/heads/dev'
         run: |
           mkdir -p ./out/dev
-          cp -r . ./out/dev/
-          echo "Dev branch copied to /dev"
+          rsync -av --exclude out . ./out/dev/
+
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
