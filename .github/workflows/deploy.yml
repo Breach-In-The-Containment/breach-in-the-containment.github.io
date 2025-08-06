@@ -11,33 +11,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout main branch
         uses: actions/checkout@v4
         with:
-          path: main  # Checkout main branch into a 'main' directory
+          path: main # Checkout main branch into a 'main' directory
 
       - name: Checkout dev branch
         uses: actions/checkout@v4
         with:
           ref: dev
-          path: dev  # Checkout dev branch into a 'dev' directory
+          path: dev # Checkout dev branch into a 'dev' directory
 
-      - name: Create output directory
+      - name: Create output folder
         run: mkdir out
 
       - name: Copy main site to root
         run: |
-          rsync -av --exclude 'dev/' --exclude '.git' main/ ./out/
+          rsync -av --exclude '.git' main/ ./out/
 
       - name: Copy dev site to /dev
         run: |
           mkdir -p ./out/dev
-          rsync -av --exclude 'main/' --exclude '.git' dev/ ./out/dev/
+          rsync -av --exclude '.git' dev/ ./out/dev/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out
-          # Note: `keep_files: true` is not needed with this approach as we're
-          # building the complete site in each run.
