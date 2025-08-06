@@ -13,26 +13,31 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          path: main  # Checkout main branch into a 'main' directory
 
-      - name: Create output folder
+      - name: Checkout dev branch
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+          path: dev  # Checkout dev branch into a 'dev' directory
+
+      - name: Create output directory
         run: mkdir out
 
-      # Deploy main site to /
-      - name: Copy main site into root
-        if: github.ref == 'refs/heads/main'
+      - name: Copy main site to root
         run: |
-          rsync -av --exclude out . ./out/
+          rsync -av --exclude 'dev/' --exclude '.git' main/ ./out/
 
-      # Deploy dev site to /dev
-      - name: Copy dev site into /dev
-        if: github.ref == 'refs/heads/dev'
+      - name: Copy dev site to /dev
         run: |
           mkdir -p ./out/dev
-          rsync -av --exclude out . ./out/dev/
+          rsync -av --exclude 'main/' --exclude '.git' dev/ ./out/dev/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out
-          keep_files: true  # Keeps /dev when pushing main and vice versa
+          # Note: `keep_files: true` is not needed with this approach as we're
+          # building the complete site in each run.
