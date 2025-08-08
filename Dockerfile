@@ -1,8 +1,31 @@
-# Use the official nginx image as the base
-FROM nginx:alpine
+# Stage 1: Base build
+FROM node:18 AS builder
 
-# Copy your website files to the nginx html folder
-COPY . /usr/share/nginx/html
+# Set working directory
+WORKDIR /app
 
-# Expose port 80 (default for nginx)
+# Copy repo
+COPY . .
+
+# Clone dev branch into a folder
+RUN git clone --branch dev --single-branch $(git remote get-url origin) /app/dev-branch
+
+# Create output folder
+RUN mkdir -p /app/out /app/out/dev
+
+# Copy main branch site into root
+RUN rsync -av --exclude out --exclude dev-branch . /app/out/
+
+# Copy dev branch site into /dev
+RUN rsync -av --exclude out /app/dev-branch/ /app/out/dev/
+
+# Stage 2: Web server
+FROM nginx:stable-alpine
+
+# Copy built site to nginx html folder
+COPY --from=builder /app/out /usr/share/nginx/html
+
+# Expose port
 EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
