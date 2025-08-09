@@ -11,8 +11,7 @@ Use the docker image to serve locally to test it before anything else.
 
 Then go to this URL:
 
----------------------------------------------------------------------------------------
-| **Production** | http://localhost:8080/ | http://localhost:8080/index.html |
-| **Dev (testing)** | http://localhost:8080/dev/| http://localhost:8080/dev/index.html|
-|                                                                                      |
--------------------------------------------------------------------------------------  |
+| Production  | Dev |
+| --- | --- |
+| http://localhost:8080/  | http://localhost:8080/dev/ |
+| http://localhost:8080/index.html  | http://localhost:8080/dev/index.html  |
