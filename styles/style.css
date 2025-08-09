@@ -46,7 +46,8 @@ body {
 /* Hero section */
 .main-section {
   height: 100vh;
-  background: url('/dev/assets/background-index.png') no-repeat center center fixed;
+  /* Path changed: '../assets/background-index.png' is relative to style.css */
+  background: url('../assets/background-index.png') no-repeat center center fixed;
   background-size: cover;
   display: flex;
   flex-direction: column;
@@ -120,14 +121,13 @@ body {
   background-color: white;
   color: darkred;
   padding: 20px 0;
-  /* Added styles for better spacing and appearance */
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .feature-item {
   text-align: center;
   margin: 0 20px;
-  cursor: pointer; /* Added for interactivity hint */
+  cursor: pointer;
   padding: 10px;
   border-radius: 8px;
   transition: background-color 0.3s ease;
@@ -140,7 +140,7 @@ body {
 .feature-item .icon {
   font-size: 28px;
   display: block;
-  margin-bottom: 5px; /* Added spacing */
+  margin-bottom: 5px;
 }
 
 .feature-item p {
@@ -150,19 +150,21 @@ body {
 }
 
 .feature-hero {
-  background: url('/dev/assets/rocket-bg.png') no-repeat center center;
+  /* Ensure the background image is correctly referenced. It was already here. */
+  background: url('/dev/assets/fnaf/image-one.png') no-repeat center center;
   background-size: cover;
-  padding: 100px 20px;
+  padding: 100px 40px; /* Increased horizontal padding */
   display: flex;
-  justify-content: center;
+  justify-content: flex-start; /* Aligns content to the left */
   align-items: center;
   min-height: 500px;
-  text-align: center; /* Centered for better aesthetics */
+  /* Removed text-align: center from here, as it's now handled by feature-text */
 }
 
 .feature-text {
   max-width: 500px;
-  text-align: center; /* Aligned text to center for better visual balance */
+  text-align: left; /* Explicitly align text to the left */
+  margin-right: auto; /* Pushes content to the left if space allows */
 }
 
 .feature-text h1 {
@@ -177,20 +179,20 @@ body {
 }
 
 .feature-text button {
-  padding: 12px 24px; /* Slightly larger padding */
+  padding: 12px 24px;
   background-color: darkred;
   border: none;
   color: white;
   font-size: 16px;
   cursor: pointer;
-  border-radius: 5px; /* Rounded corners */
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .feature-text button:hover {
   background-color: #8b0000;
-  transform: translateY(-2px); /* Slight lift effect on hover */
+  transform: translateY(-2px);
 }
 
 /* Responsive adjustments */
@@ -221,11 +223,16 @@ body {
     margin: 10px 15px;
   }
 
-  .feature-text h1 {
-    font-size: 36px;
+  .feature-hero {
+    padding: 60px 20px; /* Adjust padding for smaller screens */
+    justify-content: flex-start; /* Keep content aligned to the left */
   }
 
-  .feature-hero {
-    padding: 60px 20px;
+  .feature-text {
+    text-align: left; /* Ensure text remains left-aligned */
+  }
+
+  .feature-text h1 {
+    font-size: 36px;
   }
 }
