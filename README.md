@@ -14,4 +14,5 @@ Then go to this URL:
 | Production  | Dev |
 | --- | --- |
 | http://localhost:8080/  | http://localhost:8080/dev/ |
+| **OR** | **OR** |
 | http://localhost:8080/index.html  | http://localhost:8080/dev/index.html  |
