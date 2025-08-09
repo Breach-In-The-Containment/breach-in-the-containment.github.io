@@ -1,34 +1,45 @@
-# Stage 1: Base build
+# Stage 1: Base build - responsible for preparing the content
 FROM node:18 AS builder
 
-# Install rsync
+# Install rsync and git, which are needed for copying and manipulating files
+# Cleaning apt cache afterwards to keep the image size down
 RUN apt-get update && apt-get install -y rsync git && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy repo
+# Copy the entire local project directory into the /app directory in the container
+# This includes the content of the branch you are currently building from (e.g., main or dev)
 COPY . .
 
-# Clone dev branch into a folder
-RUN git clone --branch dev --single-branch $(git remote get-url origin) /app/dev-branch
+# Create a temporary directory for the dev branch content
+RUN mkdir /app/dev_content_temp
 
-# Create output folder
+# Checkout the 'dev' branch into the temporary directory
+# This assumes the current build context (COPY . .) is from the 'main' branch,
+# and you want to pull 'dev' branch's content into a separate folder.
+# If you are building this Dockerfile from the 'dev' branch, you would adjust this logic.
+# For a scenario where Dockerfile is built from 'main' and needs to fetch 'dev':
+RUN git clone --branch dev --single-branch . /app/dev_content_temp
+
+# Create the final output folders for Nginx
 RUN mkdir -p /app/out /app/out/dev
 
-# Copy main branch site into root (excluding out & dev-branch folders)
-RUN rsync -av --exclude out --exclude dev-branch . /app/out/
+# Copy the main branch content (from the initial COPY .) to the root of the /app/out directory
+# Exclude the temporary dev_content_temp folder and the 'out' folder itself
+RUN rsync -av --exclude 'dev_content_temp/' --exclude 'out/' . /app/out/
 
-# Copy dev branch site into /dev
-RUN rsync -av --exclude out /app/dev-branch/ /app/out/dev/
+# Copy the dev branch content (from dev_content_temp) to the /app/out/dev directory
+RUN rsync -av /app/dev_content_temp/ /app/out/dev/
 
-# Stage 2: Web server
+# Stage 2: Web server - using Nginx to serve the prepared content
 FROM nginx:stable-alpine
 
-# Copy built site to nginx html folder
+# Copy the prepared site from the 'builder' stage to Nginx's default HTML directory
 COPY --from=builder /app/out /usr/share/nginx/html
 
-# Expose port
+# Expose port 80 for web access
 EXPOSE 80
 
+# Command to start Nginx in the foreground
 CMD ["nginx", "-g", "daemon off;"]
