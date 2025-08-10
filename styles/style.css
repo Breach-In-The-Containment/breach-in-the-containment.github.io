@@ -127,14 +127,15 @@ body {
 .feature-item {
   text-align: center;
   margin: 0 20px;
-  cursor: pointer;
+  cursor: pointer; /* Keeps the hand cursor to indicate clickability */
   padding: 10px;
   border-radius: 8px;
   transition: background-color 0.3s ease;
 }
 
 .feature-item:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  /* This is the key change: removed background-color to eliminate the highlight */
+  /* You can add other subtle effects here if you wish, like a slight scale or text color change */
 }
 
 .feature-item .icon {
