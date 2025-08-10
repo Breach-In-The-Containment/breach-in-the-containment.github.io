@@ -18,4 +18,3 @@ Then go to this URL:
 | http://localhost:8080/index.html  | http://localhost:8080/dev/index.html  |
 
 
-# DO NOT DELETE THE /DEV IN PATHS! (for devs only)
