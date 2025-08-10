@@ -134,8 +134,19 @@ body {
 }
 
 .feature-item:hover {
-  /* This is the key change: removed background-color to eliminate the highlight */
-  /* You can add other subtle effects here if you wish, like a slight scale or text color change */
+  /* No background-color here, as per previous request */
+}
+
+/* NEW: Style the anchor tags within feature-item */
+.feature-item a {
+  text-decoration: none; /* Removes underline by default */
+  color: inherit; /* Inherits color from parent (.feature-item or .feature-navbar) */
+  display: block; /* Makes the entire area of the link clickable */
+}
+
+.feature-item a:hover {
+  text-decoration: none; /* Ensures no underline on hover */
+  color: inherit; /* Ensures color doesn't change on hover */
 }
 
 .feature-item .icon {
